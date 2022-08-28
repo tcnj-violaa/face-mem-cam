@@ -1,13 +1,22 @@
-##face_mem_cam
+# face_mem_cam
 
-NOTE: This is archived code from 2019, cleaned up slightly for readability. The actual functionality is not guaranteed to be functioning in its current state, especially in 2022.  
+<b>NOTE: This is archived code from 2019, cleaned up slightly for readability. The actual functionality is not guaranteed to be functioning in its current state, especially in 2022.</b>
 
 face_mem_cam is an application that predicts the memorability of video frames from a webcam, in real-time,
 as well as performing facial detection and facial landmarking. These functions are displayed graphically as 
 the app is running -- ie., the predicted memorability score is displayed both numerically and graphically via a meter,
 boundary boxes are drawn around detected faces, and feature-based landmark points are drawn on those faces.
 
--- Memorability Prediction Pipeline --
+## Dependencies
+* A pre 3.0 Python version (most likely)
+* `torch` & `torchvision` versions unknown, likely old
+* `cv2` v. ???
+* `cuda` v. ???
+* `dlib` v. ???
+* `numpy` v. ???
+
+
+## Memorability Prediction Pipeline
 
 Our memorability prediction model contains two discrete parts: a pretrained resnet model, and a custom pretrained rnn model. Typically, resnet is
 an image classifying model: given a picture, it tries to determine the class that the image belongs to. Our output is a set of probabilities
@@ -26,7 +35,7 @@ of per-frame 2048-dimensional outputs. We pass this set into the rnn, it looks o
 used for simple regression to the memorability score. This process is repeated every time three frames are captured from the webcam, that is to say, very often. For a 30 fps webcam, that's
 every tenth of a second.
 
--- Face Detection and Landmarking --
+#Face Detection and Landmarking
 
 To accomplish both face detection and landmarking, we use out-of-the-box algorithms from various libraries. OpenCV2 (imported as cv2) offers a Haar cascade
 classifier, pretrained to quickly detect frontal faces contained in a larger image: in our case, each video frame. For each detected face, the cascade
@@ -36,7 +45,7 @@ points defining various facial features: eyebrows, eyes, nose, lips, and jawline
 
 In short summary, a Haar cascade finds the faces in the frame, and our facial landmark detector 'parses' each face.
 
--- Planned Features --
+# Planned Features
 
 Ultimately, our goal is to use the facial landmarks we obtain as additional features in our memorability score prediction model. This will require dataset
 design, feature engineering, and the modification/retraining of our prediction model.
